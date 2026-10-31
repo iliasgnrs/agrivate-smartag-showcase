@@ -1,0 +1,230 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Agrivate SmartAg design system — brand tokens, base layer and DS utility classes. */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    /* Prevent horizontal page leak on mobile (wide charts/tables/popovers can
+       push the page wider than the viewport → right-side overflow). Applied on
+       the root so it propagates to the viewport WITHOUT turning <body> into a
+       scroll container (which would break the sticky header). `clip` is
+       preferred (doesn't create a scroll container); `hidden` is the fallback
+       for browsers without `clip` support. */
+    overflow-x: hidden;
+    overflow-x: clip;
+    /* Prevent iOS rubber-band horizontal scroll bounce. */
+    overscroll-behavior-x: none;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    /* Prevent double-tap-to-zoom on mobile interactive content.
+       (Full pinch-zoom disable is via the viewport meta in index.html.) */
+    touch-action: manipulation;
+  }
+
+  /* When a Radix Select (or Dialog) is open, react-remove-scroll sets
+     `body { overflow: hidden }` to lock page scroll. Because <body> has a fixed
+     `height: 100%` here, that overflow lock CLIPS the page, collapsing the
+     document scroll and snapping the page back to the top whenever a select is
+     opened while scrolled down (e.g. the irrigation-control schedule form).
+     Letting <body> grow with its content while scroll is locked keeps the page
+     position stable. The scroll position itself is held by the Select guard in
+     `src/components/ui/select.tsx`. */
+  body[data-scroll-locked] {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  /* ── Native / Capacitor WebView tweaks ─────────────────────────────────
+     App-like feel inside Android/iOS WebView: no text selection on controls,
+     no gray tap-highlight flash, and respect notch/home-bar safe areas. */
+  button,
+  [role="button"],
+  a,
+  select,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Kill the gray tap-highlight flash on Android/iOS WebViews. */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Android 15+ (targetSdk 35+) forces edge-to-edge: the WebView draws under the
+     status and navigation bars and the app has to inset itself. Measured in the
+     running app (Pixel 8 Pro / Android 16, 448x997 CSS px, dpr 2.25):
+     env(safe-area-inset-top) = 51px, env(safe-area-inset-bottom) = 48px (3-button
+     nav). Both are 0 on desktop browsers, so this is native-only behaviour.
+     The TOP inset is applied by the sticky header itself (`.safe-top` on the <nav>
+     in AppNavigation) so its background fills the status-bar strip; the bottom one
+     belongs here so every page clears the navigation bar. */
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  :root {
+    /* Agrivate 2.0 — light design system */
+    --background: 150 20% 97.6%;            /* #F8FAF9 app background */
+    --foreground: 160 84% 12.5%;            /* #053B29 deep forest green */
+
+    --card: 0 0% 100%;                       /* #FFFFFF clean white cards */
+    --card-foreground: 160 84% 12.5%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 84% 12.5%;
+
+    --primary: 160 84% 12.5%;                /* #053B29 brand dark green */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 150 20% 95%;                /* #F0F5F3 sub-card fill */
+    --secondary-foreground: 160 84% 12.5%;
+
+    --muted: 150 20% 95%;
+    --muted-foreground: 152 8% 36%;          /* #52685E muted sage text */
+
+    --accent: 158 84% 39%;                   /* #10B981 emerald accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 74% 56%;                /* #E53E3E */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 155 16% 92%;                   /* #E6EDEA subtle border */
+    --input: 155 16% 92%;
+    --ring: 158 84% 39%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Agrivate 2.0 — deep forest green dark theme */
+    --background: 161 14% 8%;                /* #071F19 deep forest */
+    --foreground: 150 25% 92%;               /* #E7F1EC light sage */
+
+    --card: 160 18% 11%;                     /* #0E2A20 dark card */
+    --card-foreground: 150 25% 92%;
+
+    --popover: 160 18% 11%;
+    --popover-foreground: 150 25% 92%;
+
+    --primary: 158 84% 39%;                  /* #10B981 emerald buttons */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 160 16% 15%;                /* dark sub-card */
+    --secondary-foreground: 150 25% 92%;
+
+    --muted: 160 16% 15%;
+    --muted-foreground: 152 8% 62%;          /* #93A99F light muted */
+
+    --accent: 158 84% 45%;                   /* brighter emerald #19D292 */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 160 14% 18%;
+    --input: 160 14% 18%;
+    --ring: 158 84% 45%;
+
+    --sidebar-background: 160 18% 11%;
+    --sidebar-foreground: 150 25% 92%;
+    --sidebar-primary: 158 84% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 16% 15%;
+    --sidebar-accent-foreground: 150 25% 92%;
+    --sidebar-border: 160 14% 18%;
+    --sidebar-ring: 158 84% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Anonymous Pro', 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #F8FAF9;
+    color: #053B29;
+  }
+
+  /* App-wide soft scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #F0F5F3;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #B9CCC3;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #93AEA1;
+  }
+}
+
+@layer components {
+  /* Feature circular icon wrapper: muted green-gray circle + brand icon */
+  .icon-circle {
+    @apply w-10 h-10 rounded-full bg-surface-sub flex items-center justify-center text-brand flex-shrink-0;
+  }
+
+  /* Metric label (subtitle/badge) */
+  .metric-label {
+    @apply text-xs font-semibold uppercase tracking-wide text-[#52685E];
+  }
+
+  /* Status pill */
+  .status-pill {
+    @apply rounded-full px-3 py-1 text-xs font-semibold;
+  }
+
+  /* Soft pastel alert surfaces */
+  .alert-danger {
+    @apply bg-[#FDE8E8] text-[#E53E3E];
+  }
+  .alert-warning {
+    @apply bg-[#FEF3C7] text-[#D97706];
+  }
+  .alert-info {
+    @apply bg-[#E0F2FE] text-[#0284C7];
+  }
+}

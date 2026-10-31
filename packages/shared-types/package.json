@@ -1,0 +1,13 @@
+{
+  "name": "@agrivate/shared-types",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Domain types and pure agronomic rules engines shared by the API, the frontend and the cron worker.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}
