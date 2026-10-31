@@ -1,6 +1,12 @@
+<div align="center">
+  <img src="assets/logo-white.svg" alt="Agrivate" width="140" />
+</div>
+
 # Agrivate SmartAg — Engineering Showcase
 
 > A public, sanitised view of **Agrivate SmartAg**, a production agri-tech SaaS that turns weather-station and IoT sensor data into agronomic decisions for farmers and agronomists.
+
+### 👉 Live demo — [app.agrivate.eu](https://app.agrivate.eu)
 
 [![Tests](https://img.shields.io/badge/tests-27%20passing-brightgreen)](#tests)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)](https://www.typescriptlang.org/)
@@ -26,7 +32,19 @@ Deliberately **excluded**: API routes, database schema and migrations, orchestra
 
 ---
 
-## Screenshot
+## Screenshots
+
+| Forecast & microclimate | Spray-window ring |
+|:---:|:---:|
+| ![7-day forecast](docs/images/forecast.png) | ![Spray window](docs/images/spray-ring.png) |
+| **AI insight card** | **Interactive historical charts** |
+| ![AI insight](docs/images/ai-insight.png) | ![Charts](docs/images/charts.png) |
+
+*Captured from the live application at [app.agrivate.eu](https://app.agrivate.eu).*
+
+---
+
+## Design system
 
 ![Design system showcase](docs/images/design-system.png)
 
