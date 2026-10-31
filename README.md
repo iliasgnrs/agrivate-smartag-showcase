@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo-white.svg" alt="Agrivate" width="140" />
+  <img src="assets/logo-white.png" alt="Agrivate" width="320" />
 </div>
 
 # Agrivate SmartAg — Engineering Showcase
